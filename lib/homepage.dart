@@ -43,7 +43,7 @@ class _BottomNavigationBarExampleState
       style: optionStyle,
     ),
     Text(
-      'Index 3: Payment',
+      'Index 3: Payments',
       style: optionStyle,
     ),
   ];
@@ -57,19 +57,7 @@ class _BottomNavigationBarExampleState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('StitchVault'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.home),
-            tooltip: 'Home Page',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')));
-            },
-          )
-        ],
-      ),
+      appBar: const BaseAppBar(),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -90,7 +78,7 @@ class _BottomNavigationBarExampleState
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.currency_rupee_outlined),
-            label: 'Payment',
+            label: 'Payments',
           ),
         ],
         currentIndex: _selectedIndex,

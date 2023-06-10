@@ -24,10 +24,9 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
         )
       ],
-      backgroundColor: Colors.green,
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(preferredSize.height);
+  Size get preferredSize => const Size.fromHeight(50.0);
 }
