@@ -15,10 +15,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
   static const List<Destination> allDestinations = <Destination>[
-    Destination(0, 'Teal', Icons.home, Colors.teal),
-    Destination(1, 'Cyan', Icons.business, Colors.cyan),
-    Destination(2, 'Orange', Icons.school, Colors.orange),
-    Destination(3, 'Blue', Icons.flight, Colors.blue),
+    Destination(0, 'Users', Icons.home, Colors.teal),
+    Destination(1, 'Designs', Icons.business, Colors.cyan),
+    Destination(2, 'Work Entries', Icons.school, Colors.orange),
+    Destination(3, 'Payments', Icons.flight, Colors.blue),
   ];
 
   late final List<GlobalKey<NavigatorState>> navigatorKeys;
@@ -157,7 +157,7 @@ class RootPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${destination.title} RootPage - /'),
+        title: Text('StitchVault'),
         backgroundColor: destination.color,
       ),
       backgroundColor: destination.color[50],
