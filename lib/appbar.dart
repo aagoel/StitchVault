@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
+import 'homepage.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    title: 'AppBar',
-    home: BaseAppBar(),
-  ));
-}
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const BaseAppBar({super.key});
+  const BaseAppBar({super.key, required this.title});
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('StitchVault'),
+      title: Text(title),
       actions: <Widget>[
         IconButton(
           icon: const Icon(Icons.home),
           tooltip: 'Home Page',
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('This is a snackbar')));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
           },
         )
       ],

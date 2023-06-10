@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:new_project/homepage.dart';
-import 'package:new_project/Training%20files/navigator.dart';
 
 void main() {
   runApp(const MyApp());
