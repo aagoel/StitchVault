@@ -15,10 +15,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
   static const List<Destination> allDestinations = <Destination>[
-    Destination(0, 'Users', Icons.home, Colors.teal),
-    Destination(1, 'Designs', Icons.business, Colors.cyan),
-    Destination(2, 'Work Entries', Icons.school, Colors.orange),
-    Destination(3, 'Payments', Icons.flight, Colors.blue),
+    Destination(0, 'Users', Icons.person, Colors.blue),
+    Destination(1, 'Designs', Icons.palette, Colors.orange),
+    Destination(2, 'Work Entries', Icons.business, Colors.red),
+    Destination(3, 'Payments', Icons.currency_rupee_outlined, Colors.green),
   ];
 
   late final List<GlobalKey<NavigatorState>> navigatorKeys;
