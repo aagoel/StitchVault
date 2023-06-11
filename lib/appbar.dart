@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'homepage.dart';
 
-
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   const BaseAppBar({super.key, required this.title});
 
@@ -16,10 +15,12 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: const Icon(Icons.home),
           tooltip: 'Home Page',
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => const Home()));
           },
         )
       ],
+      centerTitle: true,
     );
   }
 
