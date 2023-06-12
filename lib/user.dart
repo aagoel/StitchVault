@@ -10,16 +10,20 @@ class User extends StatefulWidget {
 }
 
 class _UserBottomNavigationBarExampleState extends State<User> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   final String title = "User";
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     DropdownButtonExample(),
     Text(
-      'Index 1: Add',
+      'Home Page',
       style: optionStyle,
     ),
+    Text(
+      'Add User',
+      style: optionStyle,
+    )
   ];
 
   void _onItemTapped(int index) {
@@ -40,6 +44,10 @@ class _UserBottomNavigationBarExampleState extends State<User> {
           BottomNavigationBarItem(
             icon: Icon(Icons.edit_square),
             label: 'Edit User',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_rounded),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_box),
