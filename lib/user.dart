@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:new_project/test_db.dart';
 import 'appbar.dart';
 import 'edit_user.dart';
 import 'add_user.dart';
@@ -37,6 +36,10 @@ class _UserBottomNavigationBarExampleState extends State<User> {
           BottomNavigationBarItem(
             icon: Icon(Icons.edit_square),
             label: 'Edit User',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_rounded),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_box),
