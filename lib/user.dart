@@ -21,12 +21,16 @@ class _UserBottomNavigationBarExampleState extends State<User> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   final List<Widget> _widgetOptions = <Widget>[
+
     const EmployeeDropDown(),
+
     const Text(
       'Home Page',
       style: optionStyle,
     ),
+
     AddUserPage(),
+
   ];
 
   void _onItemTapped(int index) {
@@ -73,6 +77,7 @@ class EmployeeDropDown extends StatefulWidget {
 }
 
 class _EmployeeDropDownState extends State<EmployeeDropDown> {
+
   String dropdownValue = list.first;
 
   @override
@@ -101,6 +106,7 @@ class _EmployeeDropDownState extends State<EmployeeDropDown> {
     );
   }
 }
+
 
 class AddUserPage extends StatefulWidget {
   @override
@@ -146,3 +152,4 @@ class _AddUserPageState extends State<AddUserPage> {
     );
   }
 }
+
