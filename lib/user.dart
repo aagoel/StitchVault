@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:new_project/test_db.dart';
 import 'appbar.dart';
 import 'edit_user.dart';
+import 'add_user.dart';
 
 class User extends StatefulWidget {
   const User({super.key});
@@ -12,14 +14,9 @@ class User extends StatefulWidget {
 class _UserBottomNavigationBarExampleState extends State<User> {
   int _selectedIndex = 0;
   final String title = "User";
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    DropdownButtonExample(),
-    Text(
-      'Index 1: Add',
-      style: optionStyle,
-    ),
+  final List<Widget> _widgetOptions = <Widget>[
+    const DropdownButtonExample(),
+    LoginPage(),
   ];
 
   void _onItemTapped(int index) {
