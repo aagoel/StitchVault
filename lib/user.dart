@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'appbar.dart';
-import 'add_user.dart';
 
 const List<String> list = <String>[
   'Employee 1',
@@ -22,12 +21,12 @@ class _UserBottomNavigationBarExampleState extends State<User> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   final List<Widget> _widgetOptions = <Widget>[
-    const DropdownButtonExample(),
+    const EmployeeDropDown(),
     const Text(
       'Home Page',
       style: optionStyle,
     ),
-    LoginPage(),
+    AddUserPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -66,14 +65,14 @@ class _UserBottomNavigationBarExampleState extends State<User> {
   }
 }
 
-class DropdownButtonExample extends StatefulWidget {
-  const DropdownButtonExample({super.key});
+class EmployeeDropDown extends StatefulWidget {
+  const EmployeeDropDown({super.key});
 
   @override
-  State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
+  State<EmployeeDropDown> createState() => _EmployeeDropDownState();
 }
 
-class _DropdownButtonExampleState extends State<DropdownButtonExample> {
+class _EmployeeDropDownState extends State<EmployeeDropDown> {
   String dropdownValue = list.first;
 
   @override
@@ -99,6 +98,51 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
           child: Text(value),
         );
       }).toList(),
+    );
+  }
+}
+
+class AddUserPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _AddUserPageState();
+}
+
+class _AddUserPageState extends State<AddUserPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+
+    return Scaffold(
+      body: Container(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: <Widget>[
+                TextFormField(
+                    keyboardType:
+                        TextInputType.name, // Use email input type for emails.
+                    decoration: const InputDecoration(
+                        hintText: 'Admin', labelText: 'Name of employee')),
+                TextFormField(
+                    decoration: const InputDecoration(
+                        hintText: '45', labelText: 'Age')),
+                Container(
+                  width: screenSize.width,
+                  margin: const EdgeInsets.only(top: 20.0),
+                  child: ElevatedButton(
+                    child: const Text(
+                      'Add',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () => null,
+                  ),
+                )
+              ],
+            ),
+          )),
     );
   }
 }
