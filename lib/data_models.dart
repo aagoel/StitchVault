@@ -3,8 +3,8 @@ import 'package:objectbox/objectbox.dart';
 @Entity()
 class EmployeeDetail {
   String name;
-  int personAge;
+  String personAge;
   int id;
 
-  EmployeeDetail(this.name, this.personAge, {this.id = 0});
+  EmployeeDetail({this.name = "", this.personAge = "", this.id = 0});
 }

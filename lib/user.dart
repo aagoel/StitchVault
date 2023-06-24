@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:new_project/data_models.dart';
+import 'package:new_project/main.dart';
 import 'appbar.dart';
 
-const List<String> list = <String>[
-  'Employee 1',
-  'Employee 2',
-  'Employee 3',
-  'Employee 4'
-];
+List<EmployeeDetail> list = objectbox.employeeBox.getAll();
 
 class User extends StatefulWidget {
   const User({super.key});
@@ -73,7 +70,7 @@ class EmployeeDropDown extends StatefulWidget {
 }
 
 class _EmployeeDropDownState extends State<EmployeeDropDown> {
-  String dropdownValue = list.first;
+  String dropdownValue = list.first.name;
 
   @override
   Widget build(BuildContext context) {
@@ -92,10 +89,10 @@ class _EmployeeDropDownState extends State<EmployeeDropDown> {
           dropdownValue = value!;
         });
       },
-      items: list.map<DropdownMenuItem<String>>((String value) {
+      items: list.map<DropdownMenuItem<String>>((EmployeeDetail value) {
         return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
+          value: value.name,
+          child: Text(value.name),
         );
       }).toList(),
     );
@@ -112,48 +109,41 @@ class AddUserPage extends StatefulWidget {
 class _AddUserPageState extends State<AddUserPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void addUser() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-    }
-  }
-
-  String employeeName;
-  String employeeAge;
+  String employeeName = "";
+  String employeeAge = "";
 
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
+    TextEditingController nameEditingController = TextEditingController();
+    TextEditingController ageEditingController = TextEditingController();
 
     return Form(
       key: _formKey,
       child: ListView(
         children: <Widget>[
           TextFormField(
-              keyboardType:
-                  TextInputType.name, // Use email input type for emails.
-              decoration: const InputDecoration(
-                  hintText: 'Admin', labelText: 'Name of employee'),
-              onSaved: (String value) {
-                employeeName = value;
-              },
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please Enter 10 digit number';
-                }
-                return null;
-              }),
+            controller: nameEditingController,
+            keyboardType: TextInputType.name,
+            decoration: const InputDecoration(
+                hintText: 'Admin', labelText: 'Name of employee'),
+          ),
           TextFormField(
+            controller: ageEditingController,
             decoration: const InputDecoration(hintText: '45', labelText: 'Age'),
-            onSaved: (String value) {
-              employeeAge = value;
-            },
           ),
           Container(
             width: screenSize.width,
             margin: const EdgeInsets.only(top: 20.0),
             child: ElevatedButton(
-                onPressed: addUser,
+                onPressed: () {
+                  employeeName = nameEditingController.text;
+                  employeeAge = ageEditingController.text;
+                  objectbox.employeeBox.put(EmployeeDetail(
+                      name: employeeName, personAge: employeeAge));
+                  list.add(EmployeeDetail(
+                      name: employeeName, personAge: employeeAge));
+                },
                 child: const Text(
                   'Add',
                   style: TextStyle(color: Colors.white),
@@ -162,7 +152,5 @@ class _AddUserPageState extends State<AddUserPage> {
         ],
       ),
     );
-    // ),
-    // );
   }
 }

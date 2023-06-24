@@ -33,7 +33,7 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(2, 397407591667050401),
             name: 'personAge',
-            type: 6,
+            type: 9,
             flags: 0),
         ModelProperty(
             id: const IdUid(3, 2408802377303807821),
@@ -88,9 +88,10 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (EmployeeDetail object, fb.Builder fbb) {
           final nameOffset = fbb.writeString(object.name);
+          final personAgeOffset = fbb.writeString(object.personAge);
           fbb.startTable(4);
           fbb.addOffset(0, nameOffset);
-          fbb.addInt64(1, object.personAge);
+          fbb.addOffset(1, personAgeOffset);
           fbb.addInt64(2, object.id);
           fbb.finish(fbb.endTable());
           return object.id;
@@ -102,9 +103,9 @@ ModelDefinition getObjectBoxModel() {
           final object = EmployeeDetail(
               name: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 4, ''),
-              personAge:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0))
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
+              personAge: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0));
 
           return object;
         })
@@ -121,7 +122,7 @@ class EmployeeDetail_ {
 
   /// see [EmployeeDetail.personAge]
   static final personAge =
-      QueryIntegerProperty<EmployeeDetail>(_entities[0].properties[1]);
+      QueryStringProperty<EmployeeDetail>(_entities[0].properties[1]);
 
   /// see [EmployeeDetail.id]
   static final id =
