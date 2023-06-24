@@ -100,11 +100,10 @@ ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
 
           final object = EmployeeDetail(
-              name: const fb.StringReader(asciiOptimization: true)
+              const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 4, ''),
-              personAge:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0))
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0),
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0));
 
           return object;
         })

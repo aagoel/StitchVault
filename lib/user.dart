@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:new_project/main.dart';
 import 'appbar.dart';
+import 'data_models.dart';
 
-const List<String> list = <String>[
-  'Employee 1',
-  'Employee 2',
-  'Employee 3',
-  'Employee 4'
-];
+List<EmployeeDetail> list = objectbox.employeeBox.getAll();
 
 class User extends StatefulWidget {
   const User({super.key});
@@ -26,7 +24,7 @@ class _UserBottomNavigationBarExampleState extends State<User> {
       'Home Page',
       style: optionStyle,
     ),
-    AddUserPage(),
+    const AddUserPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -70,10 +68,25 @@ class EmployeeDropDown extends StatefulWidget {
 
   @override
   State<EmployeeDropDown> createState() => _EmployeeDropDownState();
+  
 }
 
 class _EmployeeDropDownState extends State<EmployeeDropDown> {
-  String dropdownValue = list.first;
+  
+
+  String? dropdownValue;
+
+  _EmployeeDropDownState (){
+    if(list.isEmpty){
+      EmployeeDetail empDet = EmployeeDetail("dummy", 23);
+      list.add(empDet);
+    }
+    else{
+      EmployeeDetail empDet = EmployeeDetail("dummy", 23);
+      list.remove(empDet);
+    }
+    dropdownValue = list.first.name;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,10 +105,10 @@ class _EmployeeDropDownState extends State<EmployeeDropDown> {
           dropdownValue = value!;
         });
       },
-      items: list.map<DropdownMenuItem<String>>((String value) {
+      items: list.map<DropdownMenuItem<String>>((EmployeeDetail value) {
         return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
+          value: value.name,
+          child: Text(value.name),
         );
       }).toList(),
     );
@@ -115,11 +128,14 @@ class _AddUserPageState extends State<AddUserPage> {
   void addUser() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      EmployeeDetail emp = EmployeeDetail(employeeName.toString(),int.parse(employeeAge.toString()));
+      objectbox.employeeBox.put(emp);
+      list.add(emp);
     }
   }
 
-  String employeeName;
-  String employeeAge;
+  String? employeeName;
+  String? employeeAge;
 
   @override
   Widget build(BuildContext context) {
@@ -130,24 +146,32 @@ class _AddUserPageState extends State<AddUserPage> {
       child: ListView(
         children: <Widget>[
           TextFormField(
-              keyboardType:
-                  TextInputType.name, // Use email input type for emails.
-              decoration: const InputDecoration(
-                  hintText: 'Admin', labelText: 'Name of employee'),
-              onSaved: (String value) {
-                employeeName = value;
-              },
-              validator: (value) {
-                if (value.isEmpty) {
+            keyboardType:
+                TextInputType.name, // Use email input type for emails.
+            decoration: const InputDecoration(
+                hintText: 'Admin', labelText: 'Name of employee'),
+            onSaved: (String? value) {
+              employeeName = value.toString();
+            },
+            validator: (value) {
+              if (value != null && value.isEmpty) {
+                return 'Please Enter 10 digit number';
+              }
+              return null;
+            }),
+          TextFormField(
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(hintText: '45', labelText: 'Age'),
+            onSaved: (String? value) {
+              employeeAge = value.toString();
+            },
+            validator: (value) {
+                if (value != null && value.isEmpty) {
                   return 'Please Enter 10 digit number';
                 }
                 return null;
-              }),
-          TextFormField(
-            decoration: const InputDecoration(hintText: '45', labelText: 'Age'),
-            onSaved: (String value) {
-              employeeAge = value;
-            },
+              }
           ),
           Container(
             width: screenSize.width,
@@ -157,7 +181,7 @@ class _AddUserPageState extends State<AddUserPage> {
                 child: const Text(
                   'Add',
                   style: TextStyle(color: Colors.white),
-                )),
+                ))
           )
         ],
       ),
