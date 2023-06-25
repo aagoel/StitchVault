@@ -155,7 +155,7 @@ class _AddUserPageState extends State<AddUserPage> {
             },
             validator: (value) {
               if (value != null && value.isEmpty) {
-                return 'Please Enter 10 digit number';
+                return 'Please Enter a Name';
               }
               return null;
             }),
