@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:new_project/main.dart';
 import 'appbar.dart';
+
 import 'data_models.dart';
+
 
 List<EmployeeDetail> list = objectbox.employeeBox.getAll();
 
@@ -24,8 +26,9 @@ class _UserBottomNavigationBarExampleState extends State<User> {
       'Home Page',
       style: optionStyle,
     ),
+
     const AddUserPage(),
-  ];
+
 
   void _onItemTapped(int index) {
     setState(() {
@@ -68,6 +71,7 @@ class EmployeeDropDown extends StatefulWidget {
 
   @override
   State<EmployeeDropDown> createState() => _EmployeeDropDownState();
+
   
 }
 
@@ -87,6 +91,7 @@ class _EmployeeDropDownState extends State<EmployeeDropDown> {
     }
     dropdownValue = list.first.name;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +121,7 @@ class _EmployeeDropDownState extends State<EmployeeDropDown> {
 }
 
 class AddUserPage extends StatefulWidget {
+
   const AddUserPage({super.key});
 
   @override
@@ -124,6 +130,7 @@ class AddUserPage extends StatefulWidget {
 
 class _AddUserPageState extends State<AddUserPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
 
   void addUser() {
     if (_formKey.currentState!.validate()) {
@@ -137,9 +144,11 @@ class _AddUserPageState extends State<AddUserPage> {
   String? employeeName;
   String? employeeAge;
 
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
+
 
     return Form(
       key: _formKey,
@@ -188,5 +197,6 @@ class _AddUserPageState extends State<AddUserPage> {
     );
     // ),
     // );
+
   }
 }
