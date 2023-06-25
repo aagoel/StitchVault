@@ -81,15 +81,16 @@ class _EmployeeDropDownState extends State<EmployeeDropDown> {
   String? dropdownValue;
 
   _EmployeeDropDownState (){
+    list = objectbox.employeeBox.getAll();
     if(list.isEmpty){
-      EmployeeDetail empDet = EmployeeDetail("dummy", 23);
+      EmployeeDetail empDet = EmployeeDetail("None","None",-1);
       list.add(empDet);
     }
     else{
-      EmployeeDetail empDet = EmployeeDetail("dummy", 23);
+      EmployeeDetail empDet = EmployeeDetail("None","None", -1);
       list.remove(empDet);
     }
-    dropdownValue = list.first.name;
+    dropdownValue = list.first.username;
   }
 
 
@@ -110,10 +111,10 @@ class _EmployeeDropDownState extends State<EmployeeDropDown> {
           dropdownValue = value!;
         });
       },
-      items: list.map<DropdownMenuItem<String>>((EmployeeDetail value) {
+      items: list.map<DropdownMenuItem<String>>((EmployeeDetail employee) {
         return DropdownMenuItem<String>(
-          value: value.name,
-          child: Text(value.name),
+          value: employee.username,
+          child: Text(employee.name),
         );
       }).toList(),
     );
@@ -133,34 +134,81 @@ class _AddUserPageState extends State<AddUserPage> {
 
 
   void addUser() {
+    bool isunique=true;
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      EmployeeDetail emp = EmployeeDetail(employeeName.toString(),int.parse(employeeAge.toString()));
-      objectbox.employeeBox.put(emp);
-      list.add(emp);
+      EmployeeDetail emp = EmployeeDetail(username.toString(),employeeName.toString(),int.parse(employeeAge.toString()));
+      for (var i = 0;i<list.length;i++){
+        if(list[i].username == emp.username){
+          isunique = false;
+        }
+      }
+      if (isunique){
+        objectbox.employeeBox.put(emp);
+      }
+      else{
+        showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Bad Username'),
+          content: const Text('Username already exists'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+              ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     }
   }
 
   String? employeeName;
   String? employeeAge;
+  String? username;
 
 
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-
+    TextEditingController editUsername = TextEditingController();
+    TextEditingController editName = TextEditingController();
+    TextEditingController editAge = TextEditingController();
 
     return Form(
       key: _formKey,
       child: ListView(
         children: <Widget>[
           TextFormField(
+            controller: editUsername,
+            keyboardType:
+                TextInputType.name, // Use email input type for emails.
+            decoration: const InputDecoration(
+                hintText: 'Admin', labelText: 'Username of employee'),
+            onSaved: (String? value) {
+              username = value.toString();
+              editUsername.clear();
+            },
+            validator: (value) {
+              if (value != null && value.isEmpty){
+                return 'Please Enter a Name';
+              }
+              return null;
+            }),
+          TextFormField(
+            controller: editName,
             keyboardType:
                 TextInputType.name, // Use email input type for emails.
             decoration: const InputDecoration(
                 hintText: 'Admin', labelText: 'Name of employee'),
             onSaved: (String? value) {
               employeeName = value.toString();
+              editName.clear();
             },
             validator: (value) {
               if (value != null && value.isEmpty) {
@@ -169,11 +217,13 @@ class _AddUserPageState extends State<AddUserPage> {
               return null;
             }),
           TextFormField(
+            controller: editAge,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(hintText: '45', labelText: 'Age'),
             onSaved: (String? value) {
               employeeAge = value.toString();
+              editAge.clear();
             },
             validator: (value) {
                 if (value != null && value.isEmpty) {
