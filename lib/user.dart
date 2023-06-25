@@ -28,7 +28,7 @@ class _UserBottomNavigationBarExampleState extends State<User> {
     ),
 
     const AddUserPage(),
-
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
