@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:new_project/main.dart';
 import 'appbar.dart';
 
-const List<String> list = <String>[
-  'Employee 1',
-  'Employee 2',
-  'Employee 3',
-  'Employee 4'
-];
+import 'data_models.dart';
+
+
+List<EmployeeDetail> list = objectbox.employeeBox.getAll();
 
 class User extends StatefulWidget {
   const User({super.key});
@@ -26,8 +26,9 @@ class _UserBottomNavigationBarExampleState extends State<User> {
       'Home Page',
       style: optionStyle,
     ),
-    AddUserPage(),
-  ];
+
+    const AddUserPage(),
+
 
   void _onItemTapped(int index) {
     setState(() {
@@ -70,10 +71,27 @@ class EmployeeDropDown extends StatefulWidget {
 
   @override
   State<EmployeeDropDown> createState() => _EmployeeDropDownState();
+
+  
 }
 
 class _EmployeeDropDownState extends State<EmployeeDropDown> {
-  String dropdownValue = list.first;
+  
+
+  String? dropdownValue;
+
+  _EmployeeDropDownState (){
+    if(list.isEmpty){
+      EmployeeDetail empDet = EmployeeDetail("dummy", 23);
+      list.add(empDet);
+    }
+    else{
+      EmployeeDetail empDet = EmployeeDetail("dummy", 23);
+      list.remove(empDet);
+    }
+    dropdownValue = list.first.name;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,10 +110,10 @@ class _EmployeeDropDownState extends State<EmployeeDropDown> {
           dropdownValue = value!;
         });
       },
-      items: list.map<DropdownMenuItem<String>>((String value) {
+      items: list.map<DropdownMenuItem<String>>((EmployeeDetail value) {
         return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
+          value: value.name,
+          child: Text(value.name),
         );
       }).toList(),
     );
@@ -103,6 +121,9 @@ class _EmployeeDropDownState extends State<EmployeeDropDown> {
 }
 
 class AddUserPage extends StatefulWidget {
+
+  const AddUserPage({super.key});
+
   @override
   State<StatefulWidget> createState() => _AddUserPageState();
 }
@@ -110,39 +131,72 @@ class AddUserPage extends StatefulWidget {
 class _AddUserPageState extends State<AddUserPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+
+  void addUser() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      EmployeeDetail emp = EmployeeDetail(employeeName.toString(),int.parse(employeeAge.toString()));
+      objectbox.employeeBox.put(emp);
+      list.add(emp);
+    }
+  }
+
+  String? employeeName;
+  String? employeeAge;
+
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
 
-    return Scaffold(
-      body: Container(
-          padding: const EdgeInsets.all(20.0),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              children: <Widget>[
-                TextFormField(
-                    keyboardType:
-                        TextInputType.name, // Use email input type for emails.
-                    decoration: const InputDecoration(
-                        hintText: 'Admin', labelText: 'Name of employee')),
-                TextFormField(
-                    decoration: const InputDecoration(
-                        hintText: '45', labelText: 'Age')),
-                Container(
-                  width: screenSize.width,
-                  margin: const EdgeInsets.only(top: 20.0),
-                  child: ElevatedButton(
-                    child: const Text(
-                      'Add',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () => null,
-                  ),
-                )
-              ],
-            ),
-          )),
+
+    return Form(
+      key: _formKey,
+      child: ListView(
+        children: <Widget>[
+          TextFormField(
+            keyboardType:
+                TextInputType.name, // Use email input type for emails.
+            decoration: const InputDecoration(
+                hintText: 'Admin', labelText: 'Name of employee'),
+            onSaved: (String? value) {
+              employeeName = value.toString();
+            },
+            validator: (value) {
+              if (value != null && value.isEmpty) {
+                return 'Please Enter a Name';
+              }
+              return null;
+            }),
+          TextFormField(
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(hintText: '45', labelText: 'Age'),
+            onSaved: (String? value) {
+              employeeAge = value.toString();
+            },
+            validator: (value) {
+                if (value != null && value.isEmpty) {
+                  return 'Please Enter 10 digit number';
+                }
+                return null;
+              }
+          ),
+          Container(
+            width: screenSize.width,
+            margin: const EdgeInsets.only(top: 20.0),
+            child: ElevatedButton(
+                onPressed: addUser,
+                child: const Text(
+                  'Add',
+                  style: TextStyle(color: Colors.white),
+                ))
+          )
+        ],
+      ),
     );
+    // ),
+    // );
+
   }
 }
