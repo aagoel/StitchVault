@@ -22,7 +22,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 6367758015020608129),
       name: 'EmployeeDetail',
-      lastPropertyId: const IdUid(3, 2408802377303807821),
+      lastPropertyId: const IdUid(4, 927497851884413787),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -39,7 +39,12 @@ final _entities = <ModelEntity>[
             id: const IdUid(3, 2408802377303807821),
             name: 'id',
             type: 6,
-            flags: 1)
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(4, 927497851884413787),
+            name: 'username',
+            type: 9,
+            flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
@@ -88,10 +93,12 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (EmployeeDetail object, fb.Builder fbb) {
           final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(4);
+          final usernameOffset = fbb.writeString(object.username);
+          fbb.startTable(5);
           fbb.addOffset(0, nameOffset);
           fbb.addInt64(1, object.personAge);
           fbb.addInt64(2, object.id);
+          fbb.addOffset(3, usernameOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -100,6 +107,8 @@ ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
 
           final object = EmployeeDetail(
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
               const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 4, ''),
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0),
@@ -125,4 +134,8 @@ class EmployeeDetail_ {
   /// see [EmployeeDetail.id]
   static final id =
       QueryIntegerProperty<EmployeeDetail>(_entities[0].properties[2]);
+
+  /// see [EmployeeDetail.username]
+  static final username =
+      QueryStringProperty<EmployeeDetail>(_entities[0].properties[3]);
 }
