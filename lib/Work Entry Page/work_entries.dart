@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'appbar.dart';
+import '../appbar.dart';
 
 class WorkEntries extends StatelessWidget {
   const WorkEntries({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'appbar.dart';
+import '../appbar.dart';
 
 class Design extends StatelessWidget {
   const Design({super.key});

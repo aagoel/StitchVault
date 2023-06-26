@@ -1,10 +1,10 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:new_project/design.dart';
-import 'package:new_project/payments.dart';
-import 'package:new_project/user.dart';
-import 'package:new_project/work_entries.dart';
+import 'package:new_project/Design%20Page/design.dart';
+import 'package:new_project/Payments%20Page/payments.dart';
+import 'package:new_project/User%20Page/user_main.dart';
+import 'package:new_project/Work%20Entry%20Page/work_entries.dart';
 import 'appbar.dart';
 
 class Home extends StatelessWidget {
